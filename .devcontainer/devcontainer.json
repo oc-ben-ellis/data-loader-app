@@ -1,0 +1,39 @@
+{
+  "name": "loader-devcontainer",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "USER_UID": "${localEnv:UID}",
+      "USER_GID": "${localEnv:GID}",
+      "DOCKER_GID": "${localEnv:DOCKER_GID}"
+    }
+  },
+  "workspaceFolder": "/code",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": false,
+  "overrideCommand": true,
+  "runArgs": [
+    "--init",
+    "--privileged=false",
+    "--cap-drop=ALL",
+    "--security-opt",
+    "label=disable"
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/code,type=bind,consistency=cached",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${env:SSH_AUTH_SOCK},target=/ssh-agent,type=bind",
+    "source=${env:HOME}/.gnupg,target=/home/vscode/.gnupg,type=bind,consistency=cached",
+    "source=${env:XDG_RUNTIME_DIR}/gnupg/S.gpg-agent,target=/gnupg/S.gpg-agent,type=bind,consistency=cached",
+    "source=${env:XDG_RUNTIME_DIR}/gnupg,target=/home/vscode/.gnupg-runtime,type=bind,consistency=cached",
+    "source=${env:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,readonly,consistency=cached",
+    "source=${env:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,readonly,consistency=cached"
+
+  ],
+  "containerEnv": {
+    "SSH_AUTH_SOCK": "/ssh-agent",
+    "GPG_TTY": "/dev/tty",
+    "GNUPGHOME": "/home/vscode/.gnupg"
+  }
+}

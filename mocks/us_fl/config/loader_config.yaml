@@ -1,0 +1,5 @@
+data_source_id: us_fl
+
+loader:
+  batch_max_size: 1000000
+  # Additional loader-specific settings can be added here

@@ -1,0 +1,74 @@
+repos:
+  # generic hooks (in accordance with https://opencorporates.atlassian.net/wiki/x/dgAFAg)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    - id: no-commit-to-branch
+      args: [--branch, master]
+    - id: trailing-whitespace
+    - id: end-of-file-fixer
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.2.0
+    hooks:
+    - id: conventional-pre-commit
+      stages: [commit-msg]
+
+  # iac hooks (in accordance with https://opencorporates.atlassian.net/wiki/x/dgAFAg)
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 3.2.471
+    hooks:
+      - id: checkov
+
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.30
+    hooks:
+      - id: terraform-fmt
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.100.0
+    hooks:
+    - id: terraform_docs
+      args:
+        - --hook-config=--path-to-file=README.md
+        - --hook-config=--add-to-existing-file=true
+
+  # Use poetry versions of linters so we keep the versions in sync
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: poetry run ruff check
+        args: [--fix, --exit-non-zero-on-fix]
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      - id: class-naming-check
+        name: Check class naming conventions
+        entry: poetry run python bin/check_class_naming.py
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: docs-generate-and-check-links
+        name: Generate docs and check links
+        entry: bash -lc 'rm -rf site && bin/techdocs-build-docker.sh && test -f site/index.html && linkchecker site/index.html --ignore-url="^http://127.0.0.1" --ignore-url="^http://localhost"'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # - id: unit-tests
+      #   name: Run unit tests only
+      #   entry: poetry run pytest tests/unit/ -v --tb=short
+      #   language: system
+      #   types: [python]
+      #   pass_filenames: false
+      #   stages: [commit]

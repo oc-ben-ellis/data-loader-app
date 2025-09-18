@@ -1,0 +1,9 @@
+*  @openc/tech-codeowners @openc/devops
+
+# DevOps
+.github/**                @openc/devops
+CODEOWNERS                @openc/devops
+renovate.json             @openc/devops
+.checkov.yaml             @openc/devops
+.pre-commit-config.yaml   @openc/devops
+package.json              @openc/devops

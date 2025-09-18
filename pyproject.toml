@@ -1,0 +1,244 @@
+[tool.poetry]
+name = "data-loader-app"
+version = "0.1.0"
+description = "The load app"
+authors = ["Ben Ellis <ben.ellis@opencorporates.com>"]
+readme = "README.md"
+packages = [
+    {include = "data_loader_app", from = "src"},
+    {include = "data_loader_core", from = "src"}
+]
+
+[tool.poetry.dependencies]
+python = ">=3.13,<3.15"
+httpx = "^0.25.0"
+asyncssh = "^2.13.0"
+paramiko = "^3.4.0"
+pysftp = "^0.2.9"
+# Pin AWS SDK versions compatible with aiobotocore 2.12.x
+# aiobotocore 2.12.3 requires botocore >=1.34.41,<1.34.70 and boto3 >=1.34.41,<1.34.70
+boto3 = ">=1.34.41,<1.34.70"
+botocore = ">=1.34.41,<1.34.70"
+aiobotocore = "^2.12.3"
+redis = "^5.0.0"
+aiofiles = "^23.0.0"
+structlog = "^24.1.0"
+aiohttp = "^3.12.15"
+cairosvg = "^2.8.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.12.0"
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.0"
+pytest-timeout = "^2.1.0"
+pytest-xdist = "^3.3.0"
+mypy = "^1.5.1"
+coverage = "^7.0.0"
+testcontainers = "^3.7.0"
+types-aiofiles = "^24.1.0.20250822"
+types-boto3 = "^1.40.19"
+types-botocore = "^1.0.2"
+markdown = "^3.5.0"
+jinja2 = "^3.1.0"
+pre-commit = "^3.5.0"
+types-flask = "^1.1.6"
+types-Markdown = "^3.5.0"
+types-Pygments = "^2.19.0"
+types-requests = "^2.32.4.20250809"
+types-pysftp = "^0.2.17.20250805"
+mkdocs = "^1.6.1"
+mkdocs-material = "9.6.8"
+mkdocs-glightbox = "^0.3.4"
+linkchecker = "^10.6.0"
+mkdocs-techdocs-core = "^1.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".pytest_cache",
+    "build",
+    "dist",
+    "tmp",
+    "docs",
+]
+
+# see https://opencorporates.atlassian.net/wiki/spaces/ENGINEERIN/pages/382337032/Platform+ADR+002+004+Baseline+Linting+Type-Checking
+[tool.ruff.lint]
+select = [
+  "A", # A: flake8-builtins
+  "ANN", # ANN: flake8-annotations
+  "ARG", # ARG: flake8-unusedargs
+  "B", # B: flake8-bugbear
+  "BLE", # BLE: flake8-blind-except
+  "C4", # C4:  flake8-comprehensions
+  "C90", # C90: McCabe Complexity
+  "COM", # COM: flake8-commas
+  "D", # D: pydocstyle
+  "DTZ", # DTZ: flake8-datetimez
+  "ERA", # ERA: eradicate
+  "F", # F: pyflakes
+  "FBT", # FBT: flake8-boolean-trap
+  "G", # G: flake8-logging-format
+  "I", # I: isort
+  "ICN", # ICN: flake8-import-conventions
+  "INP", # INP: flake8-no-pep420
+  "INT", # INT: flake8-gettext
+  "ISC", # ISC: flake8-implicit-str-concat
+  "N", # N: pep8-naming
+  "NPY", # NPY: NumPy-specific rules
+  "PD", # PD:: pandas-vet
+  "PGH", # PGH: pygrep-hooks
+  "PIE", # PIE: flake8-pie
+  "PL", # PLC: Pylint
+  "PT", # PT: flake8-pytest-style
+  "PTH", # PTH: flake8-use-pathlib
+  "PYI", # PYI: flake8-PYI
+  "Q", # Q: flake8-quotes
+  "RET", # RET: flake8-return
+  "RSE", # RSE: flake8-raise
+  "RUF", # RUF: Ruff-specific rules
+  "S", # S: flake8-bandit
+  "SIM", # SIM: flake8-simplify
+  "SLF", # SLF: flake8-self
+  "T20", # T20: flake8-print
+  "TCH", # TCH: flake8-type-checking
+  "TID", # TID: flake8-tidy-imports
+  "TRY", # TRY: tryceratops
+  "UP", # UP: PyUpgrade
+  "W", # W: pycodestyles Warnings
+
+]
+ignore = [
+    "E501",  # line too long, handled by ruff format
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+    "D1", # D1* (undocumented) ignored for service code.
+    "PYI014", # PYI014 PYI015 ignored due to breaking mypy attrs support.
+    "PYI015",
+         "Q000", # Q000 Q001 Q002 ignored as conflicts with ruff quotes formatting.
+     "Q001",
+     "Q002",
+     "PLR0913", # PLR0913 ignored because keyword arguments exist.
+     "COM812", # COM812 ignored due to conflicts with ruff formatting.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*.py" = ["S101", "S105", "S106", "S108", "S110", "S104", "S201", "S603", "S607", "PTH110", "PTH118", "PTH123", "PLR2004", "PLR0912", "PLR0915", "PLR1704", "ANN", "SLF", "BLE", "PLC0415", "TRY002", "TRY003", "TRY300", "TRY301", "T201", "ARG001", "ARG002", "PLW0602", "PLW0603", "PLW1508", "SIM102", "SIM105", "SIM117", "DTZ005", "DTZ011", "PT017", "B017", "PT011", "N814"]
+"mocks/**/*.py" = ["S101", "S105", "S106", "S110", "S104", "S201", "S603", "S607", "PTH110", "PTH118", "PTH123", "PLR2004", "PLR0912", "PLR0915", "PLR1704", "ANN", "SLF", "BLE", "PLC0415", "TRY003", "TRY300", "TRY301", "T201", "ARG001", "ARG002", "PLW0602", "PLW0603", "PLW1508", "SIM102", "SIM105", "SIM117", "DTZ005", "DTZ011", "PT017"]  # Allow assert, hardcoded passwords, URLs, SQL, subprocess, pathlib, magic values, complexity, annotations, self, blind except, import, exception, print, unused args, global vars, nested ifs, datetime, and pytest rules in mock files
+"bin/**/*.py" = ["PTH123", "TRY300", "BLE001", "SIM102", "PLR0912", "PLR0915", "RUF001", "S110", "PLC0415", "B007", "T201", "S603"]  # Allow pathlib, exception handling, simplification, complexity, unicode, security, import, loop control, print, and subprocess rules in bin scripts
+"examples/**/*.py" = ["PLC0415", "S110", "BLE001", "S105", "DTZ005", "SIM105", "INP001"]  # Allow import, exception handling, hardcoded passwords, datetime, simplification, and namespace package rules in examples
+
+# Specific modules with deliberate exception messages and runtime imports
+"tests/conftest.py" = ["PGH003", "I001", "F401", "RUF100"]
+
+# Pragmatic ignores for incremental adoption in src
+"src/data_loader_app/main.py" = ["PLR0915"]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+quote-style = "double" # Use double quotes for strings.
+indent-style = "space" # Indent with spaces, rather than tabs.
+skip-magic-trailing-comma = false # Respect magic trailing commas.
+line-ending = "auto" # Auto-detect the appropriate line ending.
+docstring-code-format = false # auto-format code examples in docstrings
+docstring-code-line-length = "dynamic" # use dynamic line length for code examples in docstrings.
+
+[tool.mypy]
+strict = true
+mypy_path = "$MYPY_CONFIG_FILE_DIR/stubs:$MYPY_CONFIG_FILE_DIR/test"
+
+# Suppress verbose notes about type inference
+show_error_codes = true
+show_column_numbers = false
+
+# General settings
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+# Exclude directories
+exclude = [
+    "tmp",
+    "site",
+]
+
+# Ignore missing imports for boto3 to reduce verbose output
+[[tool.mypy.overrides]]
+module = "boto3.*"
+ignore_missing_imports = true
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "botocore.*"
+ignore_missing_imports = true
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "oc_pipeline_bus.*"
+ignore_missing_imports = true
+ignore_errors = true
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+timeout = 300
+testpaths = ["tests"]
+norecursedirs = ["tmp", "tmp-architecture", "build", "dist", ".git", ".tox", ".venv", ".mypy_cache", ".pytest_cache", ".ruff_cache"]
+addopts = [
+    "--strict-markers",
+    "-n", "auto",
+    "--tb=short",
+    "-W", "ignore::RuntimeWarning:unittest.mock.*",
+    "--maxfail=5",  # Stop after 5 failures for faster feedback
+]
+markers = [
+    "asyncio: mark test as async",
+    "localstack: mark test as requiring localstack container",
+    "integration: mark test as integration test",
+    "slow: mark test as slow running",
+]
+
+[tool.coverage.run]
+data_file = "tmp/.coverage"
+relative_files = true
+source = ["./src"]
+omit = [
+    ["stubs/*", "tests/*", "samples/*", "src/**/demo_*.*"]
+]
+
+[tool.coverage.report]
+include_namespace_packages = "true"
+fail_under = 100
+exclude_lines = [ 'pragma: no cover', 'raise NotImplementedError', 'if TYPE_CHECKING:', 'if typing.TYPE_CHECKING:', '@overload', '@typing.overload' ]
+
+[tool.coverage.html]
+directory = "tmp/.coverage/html_report/"
+
+[tool.poetry.scripts]
+
+[tool.poetry-git-version-plugin]
+make_alpha_version = true
+alpha_version_format = '{version}.dev{distance}+{commit_hash}'

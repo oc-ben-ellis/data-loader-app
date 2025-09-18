@@ -1,0 +1,34 @@
+name: bump version
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  issues: write
+  discussions: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "**/*.tf"
+      - "!infra/**"
+      - "src/**/*.py"
+      - "!docs/**"
+  workflow_dispatch:
+
+jobs:
+  call-bump-version:
+    uses: openc/gh-actions/.github/workflows/reusable-bump-version.yaml@master
+
+    secrets:
+      # Github token used to run git tagging
+      private-token: ${{ secrets.BYPASS }}

@@ -1,0 +1,13 @@
+config_name: us-fl
+aws_secret_key: us-fl-sftp-credentials
+connection:
+  connect_timeout: 20.0
+  rate_limit_requests_per_second: 2.0
+retry:
+  max_retries: 3
+  base_retry_delay: 1.0
+  max_retry_delay: 60.0
+  retry_exponential_base: 2.0
+security:
+  verify_host_key: true
+  compression: false

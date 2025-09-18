@@ -1,0 +1,35 @@
+data_source_id: us_fl
+
+loader:
+  batch_max_size: 1000000
+  # Additional loader-specific settings can be added here
+
+locators:
+  - sftp_directory:
+      sftp_config: us_fl
+      remote_dir: doc/cor
+      filename_pattern: '????????c.txt'
+      max_files: null
+      file_filter:
+        date_filter:
+          start_date: '20250829'
+          date_pattern: YYYYMMDD
+      sort_key: mtime
+      sort_reverse: true
+      state_management_prefix: us_fl_daily_provider
+  - sftp_file:
+      sftp_config: us_fl
+      file_paths:
+        - doc/Quarterly/Cor/cordata.zip
+      state_management_prefix: us_fl_quarterly_provider
+loader_settings:
+  concurrency: 1
+  target_queue_size: 100
+  rate_limit:
+    requests_per_second: 2.0
+  timeouts:
+    connect_timeout: 20.0
+    read_timeout: 300.0
+protocols:
+  sftp:
+    us_fl: sftp_config.yaml

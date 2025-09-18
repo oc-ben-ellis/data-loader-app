@@ -1,0 +1,7 @@
+directory:
+  - .
+framework:
+  - all
+quiet: true
+skip-path:
+  - mocks/

@@ -1,0 +1,31 @@
+name: pre-commit autoupdate
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  issues: write
+  discussions: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
+on:
+  schedule:
+    # every sunday
+    - cron: "0 0 * * MON"
+  workflow_dispatch:
+
+jobs:
+  call-pre-commit-autoupdate:
+    uses: openc/gh-actions/.github/workflows/reusable-pre-commit-autoupdate.yaml@master
+    secrets:
+      # Github token used to run git tagging
+      private-token: ${{ secrets.BYPASS }}
+      PIPELINE_GPG_KEY: ${{ secrets.PIPELINE_GPG_KEY }}
+      PIPELINE_GPG_PASSPHRASE: ${{ secrets.PIPELINE_GPG_PASSPHRASE }}

@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: data-loader-sftp
+  description: Terraform module which deploys the Data loader component.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://opencorporates.atlassian.net/wiki/spaces/DEV/pages/1185513523/Component+SFTP
+      title: Confluence
+      icon: dashboard
+      type: docs
+  tags:
+    - aws
+    - terraform
+    - docker
+    - python
+spec:
+  type: iac
+  lifecycle: production
+  owner: devops
+  system: loader

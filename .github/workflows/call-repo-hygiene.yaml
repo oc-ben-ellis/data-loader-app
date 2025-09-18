@@ -1,0 +1,29 @@
+name: repo hygiene
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  issues: write
+  discussions: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  call-repo-hygiene:
+    uses: openc/gh-actions/.github/workflows/reusable-repo-hygiene.yaml@master
+
+    secrets:
+      # Github token used to run git tagging
+      private-token: ${{ secrets.BYPASS }}
